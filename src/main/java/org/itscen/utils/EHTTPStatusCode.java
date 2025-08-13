@@ -2,7 +2,7 @@ package org.itscen.utils;
 
 public enum EHTTPStatusCode
 {
-    OK(400);
+    OK(200);
 
 
     private int mCode;
