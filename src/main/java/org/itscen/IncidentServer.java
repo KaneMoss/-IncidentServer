@@ -39,6 +39,7 @@ public class IncidentServer
 
     private void init() {
         mServer.start();
+        mServer.createContext("/api", new IncidentAPIHandler());
         System.out.println("Server has started");
     }
 
