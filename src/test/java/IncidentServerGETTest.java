@@ -24,8 +24,32 @@ public class IncidentServerGETTest extends IncidentServerTests
                                                       .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
         assertEquals(200, response.statusCode());
-        assertTrue(response.body().contains("Hello World"));
+    }
+
+    @Test
+    public void DoesGETRequestWithParametersReturnSameParameters() throws IOException, InterruptedException {
+        final String requestParams = "?q=" + "technology=Cloud Computing" + "&role=System Administrator"
+                + "&environment=Enterprise Network";
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080" + "/api" + requestParams))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertTrue(response.body().contains("Cloud Computing"));
+        assertTrue(response.body().contains("System Administrator"));
+        assertTrue(response.body().contains("Enterprise Network"));
+    }
+
+    @Test
+    public void DoesGETRequestWithNoParamsReturnEmpty() throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080" + "/api"))
+            .GET()
+            .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertTrue(response.body().isEmpty());
     }
 }
