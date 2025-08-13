@@ -4,6 +4,11 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+
+/**
+ * HTTPServer for providing a REST API for generating random IT-related scenarios based on user inputs.
+ * Implemented as singleton to prevent accidental multiple servers being initialised.
+ * */
 public class IncidentServer
 {
     private static final int PORT = 8080;
@@ -20,7 +25,6 @@ public class IncidentServer
         return instance;
     }
 
-
     private IncidentServer(int portNumber) {
         try {
             mServer = HttpServer.create(new InetSocketAddress(portNumber), 0);
@@ -33,12 +37,10 @@ public class IncidentServer
         init();
     }
 
-
     private void init() {
         mServer.start();
         System.out.println("Server has started");
     }
-
 
     public int getPortNumber() {
         return mServer.getAddress().getPort();
