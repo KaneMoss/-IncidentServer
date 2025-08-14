@@ -19,8 +19,8 @@ The API allows GET requests made with supplied query parameters : "technology", 
 Clone the repository and build with Maven:
 
 ```bash
-git clone https://github.com/yourusername/simple-java-rest-api.git
-cd simple-java-rest-api
+git clone https://github.com/KaneMoss/IncidentServer.git
+cd ./ITIncidentAPI
 mvn clean install
 ```
 
