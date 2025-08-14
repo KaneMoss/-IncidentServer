@@ -5,7 +5,7 @@ REST API built in using HttpServer that accepts user inputs relating to IT:
 - Role (e.g., System Administrator, Software Engineer, Security Analyst)
 - Environment (e.g., Enterprise Network, Cloud Infrastructure, On-Prem Data Center)
 
-And returns a randomly generated IT scenario.
+The API allows GET requests made with supplied query parameters : "technology", "role", "enviroment"
 
 
 ## Requirements
@@ -22,10 +22,10 @@ Clone the repository and build with Maven:
 git clone https://github.com/yourusername/simple-java-rest-api.git
 cd simple-java-rest-api
 mvn clean install
-
+```
 
 ## Use
 Make a GET request with the query parameters:
 
-For example
+An example query:
 http://localhost:8080/api?technology=Cloud%20Computing&role=System%20Administrator&enviroment=Enterprise%20Network
