@@ -54,8 +54,7 @@ public class IncidentAPIHandler implements HttpHandler
     }
 
     //Process the query parameters of the GET request and return our response
-    @NotNull
-    private String GetResponse(String query) throws JsonProcessingException {
+    @NotNull private String GetResponse(String query) throws JsonProcessingException {
         if (query == null || query.isEmpty()) {
             return ConvertToJSONString(new HashMap<>());
         }
@@ -88,8 +87,7 @@ public class IncidentAPIHandler implements HttpHandler
     }
 
 
-    @NotNull
-    private static HashMap<String, String> parseQuery(@NotNull String query) {
+    @NotNull private static HashMap<String, String> parseQuery(@NotNull String query) {
         final HashMap<String, String> queryParams = new HashMap<>();
 
         String[] params = query.split("&");
@@ -109,8 +107,7 @@ public class IncidentAPIHandler implements HttpHandler
 
 
     //Uses Jackson to handle conversion of the query parameters map to a JSON string
-    @NotNull
-    private static String ConvertToJSONString(@NotNull Map<String, String> map) throws JsonProcessingException {
+    @NotNull private static String ConvertToJSONString(@NotNull Map<String, String> map) throws JsonProcessingException {
         final ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(map);
     }
