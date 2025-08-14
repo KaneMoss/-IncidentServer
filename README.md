@@ -28,4 +28,5 @@ mvn clean install
 Make a GET request with the query parameters:
 
 An example query:
-http://localhost:8080/api?technology=Cloud%20Computing&role=System%20Administrator&enviroment=Enterprise%20Network
+curl -X GET "http://localhost:8080/api?technology=Cloud%20Computing&role=System%20Administrator&enviroment=Enterprise%20Network"
+
