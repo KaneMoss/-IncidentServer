@@ -22,16 +22,23 @@ public class IncidentAPIHandler implements HttpHandler
     @Override
     public void handle(HttpExchange exchange) throws IOException {
 
+        String response = "";
+
         //GET
         if (exchange.getRequestMethod().equalsIgnoreCase(GET)) {
             exchange.getResponseHeaders().set("content-type", "application/json");
 
-            final String response = GetResponse(exchange.getRequestURI().getQuery());
+            response = GetResponse(exchange.getRequestURI().getQuery());
             exchange.sendResponseHeaders(EHTTPStatusCode.OK.getCode(), response.length());
+        }
 
-            try (OutputStream os = exchange.getResponseBody()) {
-                os.write(response.getBytes());
-            }
+        else {
+            //Else not implemented so return 405 error
+            exchange.sendResponseHeaders(EHTTPStatusCode.METHOD_NOT_ALLOWED.getCode(), 0);
+        }
+
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(response.getBytes());
         }
     }
 
@@ -67,7 +74,9 @@ public class IncidentAPIHandler implements HttpHandler
         return queryParams;
     }
 
+
     //Uses Jackson to handle conversion of the query parameters map to a JSON string
+    @NotNull
     private static String ConvertToJSONString(@NotNull HashMap<String, String> map) throws JsonProcessingException {
         final ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(map);

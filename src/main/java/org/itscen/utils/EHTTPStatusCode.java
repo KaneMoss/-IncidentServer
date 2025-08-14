@@ -2,6 +2,8 @@ package org.itscen.utils;
 
 public enum EHTTPStatusCode
 {
+    METHOD_NOT_ALLOWED(405),
+    NOT_FOUND(404),
     OK(200);
 
 
