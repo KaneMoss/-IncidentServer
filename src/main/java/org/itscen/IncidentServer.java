@@ -17,6 +17,8 @@ public class IncidentServer
 
     private HttpServer mServer = null;
 
+    private IncidentAPIHandler mHandler = null;
+
 
     public static IncidentServer getInstance() {
         if (instance == null) {
@@ -39,7 +41,8 @@ public class IncidentServer
 
     private void init() {
         mServer.start();
-        mServer.createContext("/api", new IncidentAPIHandler());
+        mHandler = new IncidentAPIHandler();
+        mServer.createContext("/api", mHandler);
         System.out.println("Server has started");
     }
 
@@ -49,5 +52,9 @@ public class IncidentServer
 
     public void StopServer() {
         mServer.stop(0);
+    }
+
+    public void setSeed(int seed) {
+        mHandler.setSeed(seed);
     }
 }

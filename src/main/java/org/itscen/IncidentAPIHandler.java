@@ -3,6 +3,7 @@ package org.itscen;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.itscen.data.DataHandler;
 import org.itscen.utils.EHTTPStatusCode;
 import org.jetbrains.annotations.NotNull;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +12,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * REST API for IT based scenarios. Provides GET and POST request handling
@@ -18,6 +21,14 @@ import java.util.HashMap;
 public class IncidentAPIHandler implements HttpHandler
 {
     private static final String GET = "GET";
+
+    private final DataHandler mDataHandler;
+
+    private int mseed = -1;
+
+    public IncidentAPIHandler() {
+        mDataHandler = new DataHandler();
+    }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -49,9 +60,31 @@ public class IncidentAPIHandler implements HttpHandler
             return ConvertToJSONString(new HashMap<>());
         }
         else {
-            final HashMap<String, String> parameters = parseQuery(query);
-            return ConvertToJSONString(parameters);
+            final HashMap<String, String> jsonOutMap = parseQuery(query);
+            jsonOutMap.put("scenario", ConvertToJSONString(getRandomScenario()));
+
+            return ConvertToJSONString(jsonOutMap);
         }
+    }
+
+    @NotNull private Map<String, String> getRandomScenario()
+    {
+        final HashMap<String, String> scenarioMap = new HashMap<>();
+        final Random random = new Random();
+
+        if (mseed != -1) {
+            random.setSeed(mseed);
+        }
+
+        String incident = mDataHandler.RetrieveIncident(random.nextInt(3));
+        String step = mDataHandler.RetrieveTroubleStep(random.nextInt(3));
+        String challenge = mDataHandler.RetrieveChallenge(random.nextInt(3));
+
+        scenarioMap.put("incident", incident);
+        scenarioMap.put("challenge", challenge);
+        scenarioMap.put("troubleshooting", step);
+
+        return scenarioMap;
     }
 
 
@@ -77,8 +110,12 @@ public class IncidentAPIHandler implements HttpHandler
 
     //Uses Jackson to handle conversion of the query parameters map to a JSON string
     @NotNull
-    private static String ConvertToJSONString(@NotNull HashMap<String, String> map) throws JsonProcessingException {
+    private static String ConvertToJSONString(@NotNull Map<String, String> map) throws JsonProcessingException {
         final ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(map);
+    }
+
+    public void setSeed(int seed) {
+        mseed = seed;
     }
 }
