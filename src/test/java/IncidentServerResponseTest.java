@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
@@ -16,9 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class IncidentServerResponseTest extends IncidentServerTests
 {
-    private static final HttpClient client = HttpClient.newHttpClient();
-    private static final String BASE_URL = "http://localhost:8080/api";
-
 
     @Test
     public void DoesUnmappedURLReturn404ResponseCodeTest() throws IOException, InterruptedException {
@@ -27,7 +23,7 @@ public class IncidentServerResponseTest extends IncidentServerTests
                 .GET()
                 .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(EHTTPStatusCode.NOT_FOUND.getCode(), response.statusCode());
     }
 
@@ -38,7 +34,7 @@ public class IncidentServerResponseTest extends IncidentServerTests
                 .PUT(HttpRequest.BodyPublishers.ofString(""))
                 .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(EHTTPStatusCode.METHOD_NOT_ALLOWED.getCode(), response.statusCode());
     }
 
@@ -49,7 +45,7 @@ public class IncidentServerResponseTest extends IncidentServerTests
                 .GET()
                 .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(EHTTPStatusCode.OK.getCode(), response.statusCode());
     }
 
@@ -64,7 +60,7 @@ public class IncidentServerResponseTest extends IncidentServerTests
                 .GET()
                 .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         assertTrue(response.body().contains("Cloud Computing"));
         assertTrue(response.body().contains("System Administrator"));
         assertTrue(response.body().contains("Enterprise Network"));
@@ -77,7 +73,7 @@ public class IncidentServerResponseTest extends IncidentServerTests
                 .GET()
                 .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals("{}", response.body());
     }
 }
